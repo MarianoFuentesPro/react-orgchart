@@ -89,7 +89,9 @@ const ChartContainer = forwardRef(
       setDS(datasource);
     }, [datasource]);
 
+    console.timeLog('Start Time');
     const dsDigger = new JSONDigger(datasource, "id", "children");
+    console.timeLog('End Time');
 
     const clickChartHandler = event => {
       if (!event.target.closest(".oc-node")) {
@@ -240,8 +242,12 @@ const ChartContainer = forwardRef(
     };
 
     const changeHierarchy = async (draggedItemData, dropTargetId) => {
+      console.time('Start Time remove node');
       await dsDigger.removeNode(draggedItemData.id);
+      console.time('End Time remove node');
+      console.time('Start Time add children');
       await dsDigger.addChildren(dropTargetId, draggedItemData);
+      console.time('Start Time remove children');
       setDS({ ...dsDigger.ds });
     };
 
